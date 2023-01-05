@@ -24,6 +24,10 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+h1{
+    margin-left:5px;
+    color:white;
+}
 
 html {
     font-size: 62.5%;
@@ -168,6 +172,7 @@ main .div-messages:hover {
         padding: 5px 4px;
         font-size: 1.2rem;
         margin-top: 3px;
+       
     }
 
     .div-messages__contenido .horarios .changeColor {
@@ -243,6 +248,10 @@ main .div-messages:hover {
         .right-cont article .link-chats span > a {
             text-decoration: none;
             color: #00af9c;
+        }
+
+        title{
+            color:white;
         }
 
 select  {
