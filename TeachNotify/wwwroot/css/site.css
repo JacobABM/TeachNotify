@@ -245,7 +245,7 @@ main .div-messages:hover {
             color: #00af9c;
         }
 
-.btnNuevomsj {
+select  {
     width: 400px;
     height: 35px;
     color: white;
@@ -258,5 +258,24 @@ main .div-messages:hover {
 
 div .btnNuevomsj {
     border-top: solid #1e272b;
+}
+
+.m-t {
+    margin-top: 15px;
+}
+
+.m-b-lg {
+    margin-bottom: 30px;
+    margin-left: 450px;
+}
+
+.btnLogin {
+    margin-top: 10px;
+    width: 120px;
+    height:20px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    background-color: #495f51;
 }
 

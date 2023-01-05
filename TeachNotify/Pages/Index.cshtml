@@ -9,3 +9,86 @@
     <p>Bienvenido al Portal TeachNotifyMe</p>
 </div>
 
+
+<div class="wrapper wrapper-content">
+    <br />
+    <div class="row m-b-lg">
+        <div class="col-lg-12">
+        </div>
+        <div class="col-lg-4 col-lg-push-4 login-i18n">
+            <div class="text-center loginscreen">
+                <br />   
+                    <p>
+                        Login to the System
+                    </p>
+                    <form id="login" class="m-t" role="form" autocomplete="off">
+                        <div class="form-group">
+                            <input id="user" class="form-control required" name="username" placeholder="Username" required>
+                        </div> <br/>
+                        <div class="form-group">
+                            <input id="pw" type="password" class="form-control required" name="password" placeholder="Password" required>
+                        </div>
+
+                        <button type="submit" class="btnLogin" id="btnLogin">Login</button> <br/>
+                        <label id="passwordErrorSubmit" class="text-center" style="display: none; color: #d42F51">Username or Password incorrect</label>
+                        <br />
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+@*@section Scripts {
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnLogin').attr('disabled', true);
+        validateNull();
+        $("#login").validate();
+
+        $('#login').on('submit', function (e) {
+            e.preventDefault();
+            $("#passwordErrorSubmit").hide();
+            if (!$("#user").val() || !$("#pw").val()) {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Login", "API")',
+                data: JSON.stringify({
+                    username: $('#user').val(),
+                    password: $("#pw").val()
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                        if (data == "False") {
+                            $("#passwordErrorSubmit").show('fast');
+                        }
+                        else {
+                            location.reload();
+                        }
+                    }
+                });
+
+        });
+
+    });
+
+
+    function validateNull() {
+        $('#login').bind('change keyup', function () {
+
+            if ($(this).validate().checkForm()) {
+
+                $('#btnLogin').attr('disabled', false);
+
+            } else {
+
+                $('#btnLogin').attr('disabled', true);
+
+            }
+        });
+    }
+
+</script>
+}*@

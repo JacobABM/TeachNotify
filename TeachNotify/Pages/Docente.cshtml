@@ -16,31 +16,49 @@
     <div class="general-cont">
         <div class="left-cont">
             <header>
-                <button class="btnNuevomsj">Nuevo Mensaje</button>
+                <select></select>
             </header>
             <main>
                 <div class="input-div">
                     <span>
                         <i class='bx bx-search-alt-2'></i>
                     </span>
-                    <input type="text" placeholder="Buscar grupo">
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar grupo">
                 </div>
-                <div class="contenedor-divs">
-                    <div class="div-messages">
-                        <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
-                        <div class="div-messages__contenido">
-                            <div class="usuarios-sms">
-                                <p class="usuario-visto titulo">Grupo Español</p>
-                                <span class="visto"><i class='bx bx-check-double'></i></span>
-                                <span class="usuario-visto"><i class='bx bx-check-double'>9949494</i></span>
+                <section id="mySection">
+                    <div class="contenedor-divs">
+                        <div class="div-messages">
+                            <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
+                            <div class="div-messages__contenido">
+                                <div class="usuarios-sms">
+                                    <p class="usuario-visto titulo">Grupo Español</p>
+                                    <span class="visto"><i class='bx bx-check-double'></i></span>
+                                    <span class="usuario-visto"><i class='bx bx-check-double'>9949494</i></span>
+                                </div>
+                                <div class="horarios">
+                                    <span class="hora-sms">12:20</span>
+                                    <span class="horarios__hover">178</span>
+                                </div>
                             </div>
-                            <div class="horarios">
-                                <span class="hora-sms">12:20</span>
-                                <span class="horarios__hover">178</span>
+                        </div>
+
+                        <div class="div-messages">
+                            <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
+                            <div class="div-messages__contenido">
+                                <div class="usuarios-sms">
+                                    <p class="usuario-visto titulo">Grupo Ingles</p>
+                                    <span class="visto"><i class='bx bx-check-double'></i></span>
+                                    <span class="usuario-visto"><i class='bx bx-check-double'>9949494</i></span>
+                                </div>
+                                <div class="horarios">
+                                    <span class="hora-sms">12:20</span>
+                                    <span class="horarios__hover">178</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+
             </main>
         </div>
         <div class="right-cont">
@@ -59,3 +77,35 @@
     </div>
 </body>
 </html>
+
+<script>
+      function myFunction() {
+       var input, filter, section, div, p, i;
+       input = document.getElementById("myInput");
+       filter = input.value.toUpperCase();
+       section = document.getElementById("mySection");
+        div = section.getElementsByTagName("div");
+
+    for (i = 0; i < div.length; i++) {
+        p = div[i].getElementsByTagName("p")[0];
+        if (p) {
+            var palabrasEnFiltro = filter.split(' ');
+            var hallado = 0;
+            for (var filtro of palabrasEnFiltro) {
+                if (p.innerHTML.toUpperCase().indexOf(filtro) > -1) {
+                    hallado++;
+                }
+            }
+
+            if (hallado === palabrasEnFiltro.length) {
+                div[i].style.display = "";
+            } else {
+                div[i].style.display = "none";
+            }
+
+        }
+    }
+
+    }
+
+ </script>
