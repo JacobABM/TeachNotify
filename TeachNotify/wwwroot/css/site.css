@@ -296,16 +296,19 @@ div .btnNuevomsj {
     height: 100%;
     background-color: #00000050;
     display: none;
+    border-radius: 3px;
+    padding:2px;
 }
 
     .modal div {
         margin: auto;
         background-color: #3C6255;
         width: 500px;
-        height: 300px;
+        height: 200px;
         border: none;
         padding: 20px;
-        margin-top: 200px;
+        border-radius: 3px;
+        margin-top: 150px;
     }
 
         .modal div form {
@@ -333,3 +336,19 @@ div .btnNuevomsj {
         cursor: pointer;
     }
 
+    .input Enviar{
+        color:red;
+    }
+
+.input Cancelar {
+    color: red;
+}
+
+.btnChat {
+    width:50px;
+    height: 20px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    background-color: #495f51;
+}

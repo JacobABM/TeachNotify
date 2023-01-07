@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TeachNotify.Controllers
 {
-    public class AnunciosController : Controller
+    public class AvisosController : Controller
     {
 
         #region Views

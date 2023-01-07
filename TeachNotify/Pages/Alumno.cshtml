@@ -46,7 +46,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="div-messages">
                                 <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
                                 <div class="div-messages__contenido">
@@ -65,24 +64,34 @@
                     </section>          
             </main>
         </div>
+
         <div class="right-cont">
             <img src="~/images/notification.png" alt="cell"/>
             <article>
                 <h2>Mantente siempre al tanto</h2>
-                <p>En este espacio podras ver los anuncios de los grupos</p>
-                <div class="line">
-                    <span class="link-chats">
-                        <i class='bx bx-laptop'></i>
-                        <span>Recibe avisos de tu profesor</span>
-                    </span>
+                <div id="contenedor">
+                  <template id="Mensajes">
+                    <tr>
+                        <td class="titulo"></td>
+                        <td class="mensaje"></td>
+                        <td class="fecha"></td>
+                    </tr>
+                </template>
                 </div>
+              
             </article>
         </div>
     </div>
+
+
+  
 </body>
 </html>
 
 <script>
+
+    loadChat();
+
     function myFunction() {
         var input, filter, section, div, p, i;
         input = document.getElementById("myInput");
@@ -108,7 +117,36 @@
 
             }
         }
-
     }
+
+    async function loadChat() {
+        var result = await fetch("https://jeancarlo.itesrc.net/api/Avisos")
+        let datos = await result.json();
+        console.log(datos);
+    }
+
+
+    document.getElementById("contenedor");
+    document.getElementById("plantilla");
+
+    let cantidad = datos.length;
+    if (cantidad > tabla.children.length) {
+        let n = cantidad - tabla.children.length;
+        for (var x = 0; x < n; x++) {
+            let clon = plantilla.content.children[0].cloneNode(true);
+            tabla.append(clon);
+        }
+    }
+    else if (cantidad < tabla.children.length) {
+        let n = tabla.children.length - cantidad;
+        for (var x = 0; x < n; x++) {
+            tabla.lastChild.remove();
+        }
+    }
+
+    datos.forEach((o, i) => {
+        let tr = tabla.children[i];
+        tr.cells[0].innerText = o.nombreCliente;
+    });
 
 </script>

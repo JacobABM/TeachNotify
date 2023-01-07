@@ -32,7 +32,7 @@
                             <div class="div-messages__contenido">
                                 <div class="usuarios-sms">
                                     <p class="usuario-visto titulo">Grupo Español</p>
-                                    <span class="usuario-visto"><button type="button" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
+                                    <span class="usuario-visto"><button type="button" class="btnChat" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
                                 </div>
                                 <div class="horarios">
                                     <span class="hora-sms">12:20</span>
@@ -46,7 +46,7 @@
                             <div class="div-messages__contenido">
                                 <div class="usuarios-sms">
                                     <p class="usuario-visto titulo">Grupo Ingles</p>
-                                    <span class="usuario-visto"><button>Escribir</button></span>
+                                    <span class="usuario-visto"><button class="btnChat">Escribir</button></span>
                                 </div>
                                 <div class="horarios">
                                     <span class="hora-sms">12:20</span>
@@ -69,11 +69,10 @@
                             <label>Fecha:</label>
                             <input name="Fecha" type="date" />
                             <label>Mensaje</label>
-                            <textarea cols="100" rows="3" style="resize: none; border:none;">
-
+                            <textarea cols="100" rows="2" style="resize: none; border:none;">
                             </textarea>
-                            <input type="submit" value="Agregar" step="0.5" />
-                            <input type="button" value="X Cancelar" data-cancel="1" />
+                            <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;"/>
+                            <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
                         </form>
                     </div>
                 </div>
@@ -84,6 +83,25 @@
 </html>
 
 <script>
+           if (navigator.serviceWorker) {
+            navigator.serviceWorker.register('/serviceworker.js');
+
+            navigator.serviceWorker.addEventListener("message", function (event) {
+                if (event.data.url.includes(urlApi + "/avisos/"));
+                {
+                    mostrarDatos(event.data.data);
+                }
+            });
+        }
+
+        const date = document.querySelector("[name=fecha]");
+        const tbody = document.querySelector("#tableMensajes tbody");
+        const urlApi = "https://general.itesrc.net/api/tamales/";
+        const plantilla = document.getElementById("plantilla");
+        const fechaAgregar = document.querySelector("[name=Fecha]");
+
+        let tipoMensajes;
+
       function myFunction() {
        var input, filter, section, div, p, i;
        input = document.getElementById("myInput");
@@ -113,14 +131,13 @@
 
     }
 
-    //Quiero que me sirva para los 3 modales para agregar, editar y eliminar
+  
     document.addEventListener("click", async function (event) {
-        //Quiere decir que al boton que le de click tiene establecido un data-modal.
+       
         if (event.target.dataset.modal) {
             let modal = document.getElementById(event.target.dataset.modal);
 
             if (!event.target.dataset.modal.includes("Agregar")) {
-                //get al elemento que se quiere editar de la base de datos
                 let id = event.target.dataset.id;
                 var result = await fetch(urlApi + "Mensaje/" + id);
 
@@ -129,67 +146,42 @@
                     console.log(json);
 
                     let form = modal.querySelector("form");
-                    //asignar elementos a form con los datos de json
-                    //1
-                    //form.elements["NombreCliente"].value=json.nombreCliente;
-
-                    //2
-                    for (let i in json) { //recorre las propiedades del arreglo, en cambio for of recorre el valor de las propiedades
+                    for (let i in json) { 
                         if (form.elements[i] && i != "fecha") {
                             form.elements[i].value = json[i];
                         }
                     }
-
                 }
                 else {
                     console.log(json);
                 }
-            }
-
-
-            //Buscar el elemento que tenga el dataset modal para mostrar el modal
+            }        
             modal.style.display = "block";
             return;
-        }
-        //si el data-set es cancel
-        else if (event.target.dataset.cancel) {
-            //Buscamos el elemento mas cercano que tenga el id .modal y lo escondemos.
+        }      
+        else if (event.target.dataset.cancel) {           
             event.target.closest(".modal").style.display = "none";
         }
     });
 
     document.addEventListener("submit", async function (event) {
-
-        //Para cancelar el evento submit, (Override) para poder programar lo que queramos cuando pase un submit
         event.preventDefault();
 
         let form = event.target;
-        //FormData estan todos los names que tiene el formulario.
-        //La entada puede ser un arreglo, un FormData, o un mapa.
-        //Me crea un objeto JSON que a partir de entradas, en este caso lo hara de las entradas del FormData.
         let json = Object.fromEntries(new FormData(form))
-        //Hacemos un fetch a la API y para hacer por POST debemos pasar el RequestInfo y eso va en las llavesitas
         let response = await fetch(urlApi + form.dataset.action, {
             method: form.method,
-            //El cuerpo siempre debe ser string no permite enviar un json.
             body: JSON.stringify(json),
-            //SI la api te obliga a que le pongas JSON
             headers: {
                 "content-type": "application/json",
             }
-        });
-
-        //Ver que respondio
-        if (response.ok) {
-            //Borrar los campos del formulario
-            form.reset();
-            //Cerrar el modal
-            form.closest(".modal").style.display = "none";
-            //Actualizar los pedidos.
+        });      
+        if (response.ok) {        
+            form.reset();      
+            form.closest(".modal").style.display = "none";       
             mostrarPedidos();
         }
         else if (response.status == 400) {
-            //Ver si me regreso un mensaje.
             console.log(response.statusText);
             let error = await response.text();
             alert(error);
