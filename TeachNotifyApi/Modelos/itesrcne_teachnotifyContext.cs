@@ -16,7 +16,7 @@ namespace TeachNotifyApi.Modelos
         {
         }
 
-        public virtual DbSet<Alumno> Alumnos { get; set; } = null!;
+        public virtual DbSet<AlumnoRepository> Alumnos { get; set; } = null!;
         public virtual DbSet<Docente> Docentes { get; set; } = null!;
         public virtual DbSet<Mensaje> Mensajes { get; set; } = null!;
 
@@ -34,7 +34,7 @@ namespace TeachNotifyApi.Modelos
             modelBuilder.UseCollation("utf8_general_ci")
                 .HasCharSet("utf8");
 
-            modelBuilder.Entity<Alumno>(entity =>
+            modelBuilder.Entity<AlumnoRepository>(entity =>
             {
                 entity.HasKey(e => e.IdAlumnos)
                     .HasName("PRIMARY");
