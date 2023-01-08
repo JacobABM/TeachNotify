@@ -49,10 +49,9 @@
                                 <div class="div-messages__contenido">  
                                     <div  class="usuarios-sms">
                                         <p class="usuario-visto titulo">Grupo Español</p>
-                                    <span class="usuario-visto"><button type="button" class="btnChat" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
                                     </div>
                                     <div class="chose">
-                                    <select></select>
+                                    <span class="usuario-visto"><button type="button" class="btnChat" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
                                     </div>
                                 </div>
                             </div>
@@ -83,10 +82,14 @@
       <div class="modal" id="modalAgregar">
                 <div>
                     <form method="post" data-action="AgregarMensaje">
-                        <label>Fecha:</label>
-                        <input name="Fecha" type="date" />
-                        <label>Mensaje</label>
-                        <textarea cols="100" rows="2" style="resize: none; border:none;">
+                        <h1>Mensaje</h1>
+                        <label>Alumno:</label>
+                         <select id="cmbAlumno" required>                 
+                         </select> 
+                         <label>Docente:</label>
+                         <select id="cmbDocente" required></select>
+                        <label>Mensaje:</label>
+                        <textarea cols="100" rows="3" style="resize: none; border:none;" required>
                             </textarea>
                         <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
                         <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
@@ -99,6 +102,8 @@
 <script>
 
     loadChat();
+    loadAlumno();
+    loadDocente();
 
     function myFunction() {
         var input, filter, section, div, p, i;
@@ -163,6 +168,65 @@
         }); 
 
     }
+
+    async function loadDocente() {
+        var result = await fetch("https://teachnotifyme.itesrc.net/api/Docente")
+        let datos = await result.json();
+        //metodoDocente(datos);
+        console.log(datos);
+
+        let select = document.getElementById("cmbDocente");
+        datos.forEach(x => {
+            var noDocentes = document.createElement("option");
+            noDocentes.value = datos.idDocente;
+            noDocentes.innerHTML = datos.nombreDocente;
+            cmbDocente.options.add(noDocentes);
+        });
+    }
+
+
+        async function loadAlumno() {
+        var result = await fetch("https://teachnotifyme.itesrc.net/api/Alumno")
+        let datos = await result.json();
+        //meotodoAlumno(datos);
+        console.log(datos);
+
+
+        let select = document.getElementById("cmbAlumno");
+        datos.forEach(x => {
+          var noAlumnos = document.createElement("option");
+            noAlumnos.value = datos.idAlumno;
+            noAlumnos.innerHTML = datos.nombreAlumno;
+            cmbAlumno.options.add(noAlumnos);
+        });
+    }
+
+    function metodoDocente(datos) {
+        let cantidad = datos.length;
+        if (cantidad > tabla.children.length) {
+            let n = cantidad - tabla.children.length;
+            for (var x = 0; x < n; x++) {
+                let clon = plantilla.content.children[0].cloneNode(true);
+                tabla.append(clon);
+            }
+        }
+        else if (cantidad < tabla.children.length) {
+            let n = tabla.children.length - cantidad;
+            for (var x = 0; x < n; x++) {
+                tabla.lastChild.remove();
+            }
+        }
+
+        datos.forEach((o, i) => {
+            let tr = tabla.children[i];
+            tr.cells[0].innerHTML = o.idMensajes;
+            tr.cells[1].innerHTML = o.nombreAlumno;
+        });
+
+    }
+
+
+
 
     document.addEventListener("click", async function (event) {
 

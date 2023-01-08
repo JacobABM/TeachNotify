@@ -254,11 +254,11 @@ main .div-messages:hover {
             color:white;
         }
 
-select  {
+select {
     width: 120px;
     margin-top: 5px;
     color: white;
-    background-color: #495f51;
+    background-color: #A6BB8D;
     border: none;
     border-radius: 7px;
     font-size: 1.2rem;
@@ -303,7 +303,7 @@ div .btnNuevomsj {
         margin: auto;
         background-color: #3C6255;
         width: 500px;
-        height: 200px;
+        height: 300px;
         border: none;
         padding: 20px;
         border-radius: 3px;
@@ -350,4 +350,8 @@ div .btnNuevomsj {
     border: none;
     border-radius: 3px;
     background-color: #495f51;
+}
+
+div .modal label {
+    color:white;
 }
