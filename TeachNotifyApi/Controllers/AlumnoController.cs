@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using TeachNotifyApi.Repositories;
 using TeachNotifyApi.Modelos;
-using TeachNotifyApi.Controllers;
 
 namespace TeachNotifyApi.Controllers
 {
@@ -27,7 +26,8 @@ namespace TeachNotifyApi.Controllers
             var alumnos = repo.GetAll();
             return Ok(alumnos.Select(x => new
             {
-                x.IdAlumnos
+                x.IdAlumno,
+                x.NombreAlumno,
             }
          )) ;
         }

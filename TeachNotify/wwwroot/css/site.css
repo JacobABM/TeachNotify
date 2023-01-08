@@ -180,7 +180,7 @@ main .div-messages:hover {
     }
 
     .div-messages__contenido .usuarios-sms {
-        width: 320px;
+        width: 200px;
         font-size: 1.4rem;
     }
 
@@ -202,7 +202,7 @@ main .div-messages:hover {
             font-size: 2rem;
         }
 
-     .right-cont {
+    .right-cont {
     display: flex;
     width: 70%;
     background-color: #262d31;
@@ -255,14 +255,13 @@ main .div-messages:hover {
         }
 
 select  {
-    width: 400px;
-    height: 35px;
+    width: 120px;
+    margin-top: 5px;
     color: white;
     background-color: #495f51;
     border: none;
     border-radius: 7px;
     font-size: 1.2rem;
-    margin-left: 10px;
 }
 
 div .btnNuevomsj {

@@ -27,8 +27,7 @@ namespace TeachNotifyApi.Controllers
             var docentes = repo.GetAll();
             return Ok(docentes.Select(x => new
             {
-                x.IdDocentes,
-                x.Mensajes,
+                x.IdDocente,
                 x.NombreDocente
             }
          ));

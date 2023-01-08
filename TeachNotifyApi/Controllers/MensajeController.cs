@@ -27,7 +27,11 @@ namespace TeachNotifyApi.Controllers
             var mensajes = repo.GetAll();
             return Ok(mensajes.Select(x => new
             {
-                x.IdMensajes              
+                x.IdMensajes,
+                x.IdAlumnoNavigation.NombreAlumno,
+                x.IdDocenteNavigation.NombreDocente,
+                x.Mensajes,
+                x.Fecha
             }
          ));
         }

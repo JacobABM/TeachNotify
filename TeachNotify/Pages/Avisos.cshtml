@@ -1,0 +1,226 @@
+﻿@page
+@model AlumnoModel
+@{
+    ViewData["Title"] = "Usuarios";
+}
+<h1>@ViewData["Title"]</h1>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+
+<body>
+    <div class="general-cont">
+        <div class="left-cont">
+            <header>
+                <div class="header__icons">
+                    <i class='bx bx-sync'></i>
+                    <i class='bx bx-message-detail'></i>
+                    <i class='bx bx-dots-vertical-rounded'></i>
+                </div>
+            </header>
+            <main>
+                <div class="input-div">
+                    <span>
+                        <i class='bx bx-search-alt-2'></i>
+                    </span>
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar grupo">
+                </div>
+                    <section id="mySection">
+                        <div class="contenedor-divs">
+                            <div class="div-messages">
+                                <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
+                                <div class="div-messages__contenido">
+                                    <div class="usuarios-sms">
+                                        <p class="usuario-no-visto titulo">Grupo Quimica</p>   
+                                    </div>
+                                    <div class="horarios">
+                                        <span class="hora-sms changeColor">12:10</span>
+                                        <span class="horarios__hover">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-messages">
+                                <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
+                                <div class="div-messages__contenido">  
+                                    <div  class="usuarios-sms">
+                                        <p class="usuario-visto titulo">Grupo Español</p>
+                                    <span class="usuario-visto"><button type="button" class="btnChat" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
+                                    </div>
+                                    <div class="chose">
+                                    <select></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>          
+            </main>
+        </div>
+
+        <div class="right-cont">
+            <img src="~/images/notification.png" alt="cell"/>
+            <article>
+                <h2>Mantente siempre al tanto</h2>
+                <div id="contenedor">
+                </div>
+                <template id="plantilla">
+                    <tr>
+                        <td class="idAlumnos"></td>
+                        <td class="nombreAlumno"></td>
+                        <td class="idDocentes"></td>
+                        <td class="idMensajes"></td>
+                    </tr>
+                </template>
+               
+            </article>
+        </div>
+    </div>
+
+      <div class="modal" id="modalAgregar">
+                <div>
+                    <form method="post" data-action="AgregarMensaje">
+                        <label>Fecha:</label>
+                        <input name="Fecha" type="date" />
+                        <label>Mensaje</label>
+                        <textarea cols="100" rows="2" style="resize: none; border:none;">
+                            </textarea>
+                        <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
+                        <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
+                    </form>
+                </div>
+            </div>
+</body>
+</html>
+
+<script>
+
+    loadChat();
+
+    function myFunction() {
+        var input, filter, section, div, p, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        section = document.getElementById("mySection");
+        div = section.getElementsByTagName("div");
+
+        for (i = 0; i < div.length; i++) {
+            p = div[i].getElementsByTagName("p")[0];
+            if (p) {
+                var palabrasEnFiltro = filter.split(' ');
+                var hallado = 0;
+                for (var filtro of palabrasEnFiltro) {
+                    if (p.innerHTML.toUpperCase().indexOf(filtro) > -1) {
+                        hallado++;
+                    }
+                }
+                if (hallado === palabrasEnFiltro.length) {
+                    div[i].style.display = "";
+                } else {
+                    div[i].style.display = "none";
+                }
+
+            }
+        }
+    }
+
+    async function loadChat() {
+        var result = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje")
+        let datos = await result.json();
+        miMetodo(datos);
+        console.log(datos);
+    }
+
+
+   var tabla = document.getElementById("contenedor");
+   var plantilla = document.getElementById("plantilla");
+
+     function miMetodo(datos){
+        let cantidad = datos.length;
+        if (cantidad > tabla.children.length) {
+            let n = cantidad - tabla.children.length;
+            for (var x = 0; x < n; x++) {
+                let clon = plantilla.content.children[0].cloneNode(true);
+                tabla.append(clon);
+            }
+        }
+        else if (cantidad < tabla.children.length) {
+            let n = tabla.children.length - cantidad;
+            for (var x = 0; x < n; x++) {
+                tabla.lastChild.remove();
+            }
+        }
+
+         datos.forEach((o, i) => {
+            let tr = tabla.children[i];
+            tr.cells[0].innerHTML = o.idMensajes;
+            tr.cells[1].innerHTML = o.nombreAlumno;
+            tr.cells[2].innerHTML = o.nombreDocente;
+            tr.cells[3].innerHTML = o.mensajes;
+        }); 
+
+    }
+
+    document.addEventListener("click", async function (event) {
+
+        if (event.target.dataset.modal) {
+            let modal = document.getElementById(event.target.dataset.modal);
+
+            if (!event.target.dataset.modal.includes("Agregar")) {
+                let id = event.target.dataset.id;
+                var result = await fetch(urlApi + "Mensaje/" + id);
+
+                if (result.ok) {
+                    let json = await result.json();
+                    console.log(json);
+
+                    let form = modal.querySelector("form");
+                    for (let i in json) {
+                        if (form.elements[i] && i != "fecha") {
+                            form.elements[i].value = json[i];
+                        }
+                    }
+                }
+                else {
+                    console.log(json);
+                }
+            }
+            modal.style.display = "block";
+            return;
+        }
+        else if (event.target.dataset.cancel) {
+            event.target.closest(".modal").style.display = "none";
+        }
+    });
+
+    document.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        let form = event.target;
+        let json = Object.fromEntries(new FormData(form))
+        let response = await fetch(urlApi + form.dataset.action, {
+            method: form.method,
+            body: JSON.stringify(json),
+            headers: {
+                "content-type": "application/json",
+            }
+        });
+        if (response.ok) {
+            form.reset();
+            form.closest(".modal").style.display = "none";
+            mostrarPedidos();
+        }
+        else if (response.status == 400) {
+            console.log(response.statusText);
+            let error = await response.text();
+            alert(error);
+        }
+
+    });
+
+   
+
+</script>

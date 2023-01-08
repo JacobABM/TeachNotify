@@ -11,7 +11,8 @@ namespace TeachNotifyApi.Repositories
 
         public override IEnumerable<Mensaje> GetAll()
         {
-            return base.GetAll();
+             return Context.Set<Mensaje>().Include(x => x.IdAlumnoNavigation).Include(x => x.IdDocenteNavigation).OrderBy(x => x.IdMensajes);
+
         }
     }
 

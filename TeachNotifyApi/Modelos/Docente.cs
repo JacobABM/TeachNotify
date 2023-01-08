@@ -10,9 +10,7 @@ namespace TeachNotifyApi.Modelos
             Mensajes = new HashSet<Mensaje>();
         }
 
-        public int IdDocentes { get; set; }
-        public int IdAlumnos { get; set; }
-        public int IdMensajes { get; set; }
+        public int IdDocente { get; set; }
         public string NombreDocente { get; set; } = null!;
 
         public virtual ICollection<Mensaje> Mensajes { get; set; }
