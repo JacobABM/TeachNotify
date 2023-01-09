@@ -300,6 +300,17 @@ div .btnNuevomsj {
         margin-top: 150px;
     }
 
+    .modal .modalEditar div {
+        margin: auto;
+        background-color: #3C6255;
+        width: 500px;
+        height: 150px;
+        border: none;
+        padding: 20px;
+        border-radius: 3px;
+        margin-top: 150px;
+    }
+
 
         .modal div form {
             display: flex;
