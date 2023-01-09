@@ -11,8 +11,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
+   @* <script src="./js/scriptAvisos.js"></script>*@
 </head>
-@* <script src="./js/scriptAvisos.js"></script>*@
+
 <body>
     <div class="general-cont">
         <div class="left-cont">
@@ -36,7 +37,7 @@
                                 <img src="~/images/iconoperfil.png" alt="foto-sin-perfil">
                                 <div class="div-messages__contenido">  
                                     <div  class="usuarios-sms">
-                                        <p class="usuario-visto titulo">Grupo Español</p>
+                                        <p class="usuario-visto titulo">Grupo Sistemas 9.1G</p>
                                     </div>
                                     <div class="chose">
                                     <span class="usuario-visto"><button type="button" class="btnChat" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
@@ -49,15 +50,14 @@
         </div>
 
         <div class="right-cont">
-                <h2>Avisos Clase Español</h2>
-                <div id="contenedor">
-                </div>
+                <h2>Avisos - ING SISTEMAS 9.1G</h2>
+                <div id="contenedor"></div>
                 <template id="plantilla">
                     <tr>
-                        <td class="idAlumnos" style="margin: 3px; color:#FED049;"></td>
+                        <td class="idMensajes" style="margin: 3px; color:#FED049;"></td>
                         <td class="nombreAlumno"></td>
-                        <td class="idDocentes"  style="margin:3px;"></td>
-                        <td class="idMensajes" ></td>
+                        <td class="nombreDocente"  style="margin:3px;"></td>
+                        <td class="mensajes" ></td>
                         <td ><a href="#" data-id="0" data-modal="modalEditar" style="margin:3px;">Editar</a></td>
                         <td ><a href="#" data-id="0" data-modal="modalEliminar" style="margin:3px;">Eliminar</a></td>
                     </tr>
@@ -76,7 +76,7 @@
                          <select id="idAlumno" required name="idAlumno">                 
                          </select>                  
                         <label>Mensaje:</label>
-                        <textarea cols="100" rows="3" style="resize: none; border:none;" required name="idMensajes">
+                        <textarea cols="100" rows="3" style="resize: none; border:none;" required name="mensajes" id="mensajes">
                             </textarea>
                         <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
                         <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
@@ -86,34 +86,36 @@
 
 
     <div class="modal" id="modalEditar">
-       <div>
-         <form method="post" data-action="EditarMensaje">
-           <input type="hidden" name="idMensajes" />
-                  <h1>Mensaje</h1>
-                   <label>Docente:</label>
-                    <select id="idDocente" required name="idDocente"></select>
-                   <label>Alumno:</label>
-                    <select id="idAlumno" required>                 
-                    </select>              
-                     <label>Mensaje:</label>
-                     <textarea cols="100" rows="3" style="resize: none; border:none;" required itemid="txtMensaje"></textarea>
-                        <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
-                        <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
-                    </form>
-    </div
+        <div>
+            <form method="post" data-action="EditarMensaje">
+                <input type="hidden" name="idMensajes" />
+                <label>Docente:</label>
+                <input id="idDocente" required name="idDocente" />
+                <label>Alumno:</label>
+                <input id="idAlumno" required name="idAlumno" />
+                <label>Mensaje:</label>
+                <textarea id="mensajes" name="mensajes" cols="100" rows="3" style="resize: none; border:none;" required >
+                            </textarea>
+                <input id="idMensajes" required name="idMensajes"  type="hidden"/>
+                <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
+                <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
+            </form>
+        </div>
+    </div>
+
+
 
     <div class="modal" id="modalEliminar">
-         <input type="hidden" name="idMensajes" />
+        <input type="hidden" name="idMensajes" />
         <div style="height: 135px;">
             <form method="post" data-action="EliminarMensaje">
                 <h1>Eliminar Mensaje</h1>
-                <label>¿Está seguro de que desea eliminar el siguiente mensaje?</label>          
+                <label>¿Está seguro de que desea eliminar el siguiente mensaje?</label>
                 <input type="submit" class="btn btn-danger" value="Eliminar" step="0.5" style="padding:1px; color:white;" />
                 <input type="button" class="btn btn-info" value="Cancelar" data-cancel="1" style="padding:1px" />
             </form>
         </div>
     </div>
-
 
 </body>
 </html>
@@ -146,16 +148,16 @@
             }
         }
     }
-    
+
     async function loadChat() {
         var result = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje")
         let datos = await result.json();
         miMetodo(datos);
         console.log(datos);
     }
-   var tabla = document.getElementById("contenedor");
-   var plantilla = document.getElementById("plantilla");
-     function miMetodo(datos){
+    var tabla = document.getElementById("contenedor");
+    var plantilla = document.getElementById("plantilla");
+    function miMetodo(datos) {
         let cantidad = datos.length;
         if (cantidad > tabla.children.length) {
             let n = cantidad - tabla.children.length;
@@ -170,8 +172,8 @@
                 tabla.lastChild.remove();
             }
         }
-       
-         datos.forEach((o, i) => {
+
+        datos.forEach((o, i) => {
             let tr = tabla.children[i];
             tr.cells[0].innerHTML = o.idMensajes;
             tr.cells[1].innerHTML = o.nombreAlumno;
@@ -179,8 +181,8 @@
             tr.cells[3].innerHTML = o.mensajes;
             tr.cells[4].children[0].setAttribute("data-id", o.idMensajes);
             tr.cells[5].children[0].setAttribute("data-id", o.idMensajes);
-   
-        }); 
+
+        });
     }
     async function loadDocente() {
         var result = await fetch("https://teachnotifyme.itesrc.net/api/Docente")
@@ -195,79 +197,102 @@
             select.options.add(noDocentes);
         });
     }
-        async function loadAlumno() {
+    async function loadAlumno() {
         var result = await fetch("https://teachnotifyme.itesrc.net/api/Alumno")
         let datos = await result.json();
         //meotodoAlumno(datos);
         console.log(datos);
         let select = document.getElementById("idAlumno");
         datos.forEach(x => {
-          var noAlumnos = document.createElement("option");
+            var noAlumnos = document.createElement("option");
             noAlumnos.value = x.idAlumno;
             noAlumnos.innerHTML = x.nombreAlumno;
             select.options.add(noAlumnos);
         });
     }
-    document.addEventListener("click", async function (event) {
-    if (event.target.dataset.modal) {
-        let modal = document.getElementById(event.target.dataset.modal)
-        let editar = event.target.dataset.modal.includes("ModalEditar");
-        var Msjs = event.target.dataset.id;
-        if (editar) {
-            let res = await fetch(API + "/Mensajes/GetById/" + Msjs);
-            if (res.ok) {
-                let mensaje = await res.json();
-                let form = modal.querySelector("Form");
-                //form.elements[0].value = mensaje["mensaje"];
-            }
-        }
-        modal.style.display = "grid";
-        return;
-    }
-    if (event.target.dataset.cancel) {
-        event.target.closest(".modal").style.display = "none";
-    }
-});
 
-function getDateTime() {
-  const now = new Date();
-  return {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    day: now.getDate(),
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
-  };
-}
-    
-      document.addEventListener("submit", async function (event) 
-        {
+    let idEli = 0;
+
+    document.addEventListener("click", async function (event) {
+        if (event.target.dataset.modal) {
+            let modal = document.getElementById(event.target.dataset.modal)
+            let editar = event.target.dataset.modal.includes("Editar");
+            var Msjs = event.target.dataset.id;
+            idEli = Msjs;
+            if (editar) {
+                let res = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje/GetById/" + Msjs);
+                if (res.ok) {
+                    let mensaje = await res.json();
+                    let form = modal.querySelector("Form");
+                    form.elements[1].value = mensaje["idAlumno"];
+                    form.elements[2].value = mensaje["idDocente"];
+                    form.elements[3].value = mensaje["mensajes"];
+                    form.elements[4].value = mensaje["idMensajes"];
+                }
+            }
+            modal.style.display = "grid";
+            return;
+        }
+        if (event.target.dataset.cancel) {
+            event.target.closest(".modal").style.display = "none";
+        }
+    });
+
+
+    document.addEventListener("submit", async function (event) {
         event.preventDefault();
         let form = event.target;
         if (form.dataset.action === "AgregarMensaje") {
-                let json = Object.fromEntries(new FormData(form));
-                var metodo = "post";        
-                json["fecha"] = getDateTime();
-                let resp = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje/AgregarMensaje", 
-                { method: metodo,
-                  body: JSON.stringify(json), headers: { "content-type": "application/json"}
+            let json = Object.fromEntries(new FormData(form));
+            var metodo = "post";
+            const now = new Date();
+            const jsonDate = now.toJSON();
+            json["fecha"] = jsonDate;
+            json["idMensajes"] = 0;
+            let resp = await
+                fetch("https://teachnotifyme.itesrc.net/api/Mensaje/AgregarMensaje",
+                    {
+                        method: metodo,
+                        body: JSON.stringify(json),
+                        headers:
+                            { "content-type": "application/json" }
+                    })
+            if (resp.ok) {
+                form.reset();
+                form.closest(".modal").style.display = "none";
+            }
+        }
+        else if (form.dataset.action === "EditarMensaje") {
+            let json = Object.fromEntries(new FormData(form));
+            var metodo = "put";
+            const now = new Date();
+            const jsonDate = now.toJSON();
+            json["fecha"] = jsonDate;
+            let resp = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje/EditarMensaje",
+                {
+                    method: metodo,
+                    body: JSON.stringify(json), headers: { "content-type": "application/json" }
                 })
-                if (resp.ok) {
-                        form.reset();
-                        form.closest(".modal").style.display = "none";
-                }
-        } 
-         //else (form.dataset.action === "EditarMensaje")
-         //    let json = Object.fromEntries(new FormData(form));
-         //       var metodo = "post";        
-         //       json["fecha"] = getDateTime();
-         //       let resp = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje/EditarMensaje", 
-         //       { method: metodo,
-         //         body: JSON.stringify(json), headers: { "content-type": "application/json"}
-         //       })
-        });  
-  
+            if (resp.ok) {
+                form.reset();
+                form.closest(".modal").style.display = "none";
+            }
+        }
+        else {
+            let json = Object.fromEntries(new FormData(form));
+            var metodo = "delete";
+            json["idMensajes"] = idEli;
+            json["mensajes"] = "a";
+            let resp = await fetch("https://teachnotifyme.itesrc.net/api/Mensaje/EliminarMensaje",
+                {
+                    method: metodo,
+                    body: JSON.stringify(json), headers: { "content-type": "application/json" }
+                })
+            if (resp.ok) {
+                form.reset();
+                form.closest(".modal").style.display = "none";
+            }
+        }
+    });
+
 </script>
-
-

@@ -47,6 +47,8 @@ namespace TeachNotifyApi.Controllers
                     x.IdMensajes,
                     x.IdAlumnoNavigation?.NombreAlumno,
                     x.IdDocenteNavigation?.NombreDocente,
+                    x.IdAlumno,
+                    x.IdDocente,
                     x.Mensajes,
                     x.Fecha,
 
