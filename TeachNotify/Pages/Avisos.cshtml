@@ -257,7 +257,8 @@
                     })
             if (resp.ok) {
                 form.reset();
-                form.closest(".modal").style.display = "none"; 
+                form.closest(".modal").style.display = "none";
+                loadChat();
             }
         }
         else if (form.dataset.action === "EditarMensaje") {
@@ -274,6 +275,7 @@
             if (resp.ok) {
                 form.reset();
                 form.closest(".modal").style.display = "none";
+                loadChat();
             }
         }
         else {
@@ -289,6 +291,7 @@
             if (resp.ok) {
                 form.reset();
                 form.closest(".modal").style.display = "none";
+                loadChat();
             }
         }
     });
