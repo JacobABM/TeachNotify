@@ -1,7 +1,7 @@
 {
   "theme_color": "#f69435",
   "background_color": "#f69435",
-  "display": "browser",
+  "display": "standalone",
   "scope": "/",
   "start_url": "/Avisos",
   "name": "Teach Notify",
@@ -9,28 +9,24 @@
   "description": "Proyecto Asignatura",
   "icons": [
     {
-      "src": "Assets/icon-512x512.png",
-      "sizes": "512x512"
-    },
-    {
       "src": "Assets/icon-192x192.png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "Assets/icon-144x144.png",
-      "sizes": "144x144"
+      "src": "Assets/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
     },
     {
-      "src": "Assets/icon-96x96.png",
-      "sizes": "96x96"
+      "src": "Assets/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
     },
     {
-      "src": "Assets/icon-72x72.png",
-      "sizes": "72x72"
-    },
-    {
-      "src": "Assets/icon-48x48.png",
-      "sizes": "48x48"
+      "src": "Assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
