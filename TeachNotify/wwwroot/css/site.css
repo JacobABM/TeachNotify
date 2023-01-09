@@ -204,51 +204,26 @@ main .div-messages:hover {
 
     .right-cont {
     display: flex;
-    width: 70%;
+    width: 100%;
     background-color: #262d31;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    color: white;
 }
+
+    .right-cont td{
+        margin-left:5px;
+    }
+
+    .right-cont tr{
+        margin-top: 20px;
+    }
 
     .right-cont img {
         height: 275px;
         width: 280px;
     }
 
-    .right-cont article {
-        font-size: 1.4rem;
-        text-align: center;
-        color: #c3c4c6;
-    }
-
-        .right-cont article > h2 {
-            font-weight: 300;
-            font-size: 32px;
-        }
-
-        .right-cont article .line {
-            width: 400px;
-            height: 1px;
-            background-color: #c3c4c6;
-            margin-bottom: 40px;
-        }
-
-        .right-cont article > p {
-            width: 400px;
-            margin: 10px 0 20px 0;
-        }
-
-        .right-cont article .link-chats > i {
-            display: inline-block;
-            font-size: 1.8rem;
-            transform: translateY(2px);
-        }
-
-        .right-cont article .link-chats span > a {
-            text-decoration: none;
-            color: #00af9c;
-        }
 
         title{
             color:white;
@@ -275,6 +250,10 @@ div .btnNuevomsj {
 .m-b-lg {
     margin-bottom: 30px;
     margin-left: 450px;
+}
+
+.right-cont .plantilla{
+    margin-top:20px;
 }
 
 .btnLogin {
