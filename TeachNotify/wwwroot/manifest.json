@@ -3,10 +3,10 @@
   "background_color": "#74bd83",
   "display": "browser",
   "scope": "/",
-  "start_url": "/Teachnotifyme",
+  "start_url": "/Avisos",
   "name": "TeachNotify",
   "short_name": "TeachtNtf",
-  "description": "Aplicaci\u00f3n de mensajer\u00eda",
+  "description": "Proyecto Final",
   "icons": [
     {
       "src": "Assets/icon-192x192.png",
@@ -29,4 +29,6 @@
       "type": "image/png"
     }
   ]
+}{
+
 }
