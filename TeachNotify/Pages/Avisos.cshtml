@@ -52,6 +52,7 @@
                                     </div>
                                     <div class="chose">
                                     <span class="usuario-visto"><button type="button" class="btnChat" value="Agregar" data-modal="modalAgregar">Escribir</button></span>
+                                    <span class="usuario-visto"><button type="button" class="btnChat2" value="Eliminar" data-modal="modalEliminar">Eliminar</button></span>
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +73,8 @@
                         <td class="nombreAlumno"></td>
                         <td class="idDocentes"></td>
                         <td class="idMensajes"></td>
+                        <a data-id="idEditarMensajes"></a>
+                        <a data-id="idEliminarMensaje"></a>
                     </tr>
                 </template>
                
@@ -89,13 +92,45 @@
                          <label>Docente:</label>
                          <select id="cmbDocente" required></select>
                         <label>Mensaje:</label>
-                        <textarea cols="100" rows="3" style="resize: none; border:none;" required>
+                        <textarea cols="100" rows="3" style="resize: none; border:none;" required itemid="txtMensaje">
                             </textarea>
                         <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
                         <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
                     </form>
                 </div>
-            </div>
+       </div>
+
+
+   @* <div class="modal" id="modalEditar">
+        <div>
+            <form method="post" data-action="EditarMensaje">
+                <h1>Mensaje</h1>
+                <label>Alumno:</label>
+                <select id="cmbAlumno" required>
+                </select>
+                <label>Docente:</label>
+                <select id="cmbDocente" required></select>
+                <label>Mensaje:</label>
+                <textarea cols="100" rows="3" style="resize: none; border:none;" required itemid="txtMensaje">
+                            </textarea>
+                <input type="submit" class="btn btn-primary" value="Enviar" step="0.5" style="padding:1px; color:white;" />
+                <input type="button" class="btn btn-danger" value="Cancelar" data-cancel="1" style="padding:1px" />
+            </form>
+        </div>
+    </div>*@
+
+    <div class="modal" id="modalEliminar">
+        <div style="height: 135px;">
+            <form method="post" data-action="EliminarMensaje">
+                <h1>Eliminar Mensaje</h1>
+                <label>¿Está seguro de que desea eliminar el siguiente mensaje?</label>          
+                <input type="submit" class="btn btn-danger" value="Eliminar" step="0.5" style="padding:1px; color:white;" />
+                <input type="button" class="btn btn-info" value="Cancelar" data-cancel="1" style="padding:1px" />
+            </form>
+        </div>
+    </div>
+
+
 </body>
 </html>
 
@@ -165,6 +200,8 @@
             tr.cells[1].innerHTML = o.nombreAlumno;
             tr.cells[2].innerHTML = o.nombreDocente;
             tr.cells[3].innerHTML = o.mensajes;
+            tr.cells[4].innerHTML = o.fecha;
+            a.cells[5].dataset.id = o.idMensajes;
         }); 
 
     }
@@ -178,8 +215,8 @@
         let select = document.getElementById("cmbDocente");
         datos.forEach(x => {
             var noDocentes = document.createElement("option");
-            noDocentes.value = datos.idDocente;
-            noDocentes.innerHTML = datos.nombreDocente;
+            noDocentes.value = x.idDocente;
+            noDocentes.innerHTML = x.nombreDocente;
             cmbDocente.options.add(noDocentes);
         });
     }
@@ -195,36 +232,11 @@
         let select = document.getElementById("cmbAlumno");
         datos.forEach(x => {
           var noAlumnos = document.createElement("option");
-            noAlumnos.value = datos.idAlumno;
-            noAlumnos.innerHTML = datos.nombreAlumno;
+            noAlumnos.value = x.idAlumno;
+            noAlumnos.innerHTML = x.nombreAlumno;
             cmbAlumno.options.add(noAlumnos);
         });
     }
-
-    function metodoDocente(datos) {
-        let cantidad = datos.length;
-        if (cantidad > tabla.children.length) {
-            let n = cantidad - tabla.children.length;
-            for (var x = 0; x < n; x++) {
-                let clon = plantilla.content.children[0].cloneNode(true);
-                tabla.append(clon);
-            }
-        }
-        else if (cantidad < tabla.children.length) {
-            let n = tabla.children.length - cantidad;
-            for (var x = 0; x < n; x++) {
-                tabla.lastChild.remove();
-            }
-        }
-
-        datos.forEach((o, i) => {
-            let tr = tabla.children[i];
-            tr.cells[0].innerHTML = o.idMensajes;
-            tr.cells[1].innerHTML = o.nombreAlumno;
-        });
-
-    }
-
 
 
 
@@ -285,6 +297,63 @@
 
     });
 
+
+    document.addEventListener("click", async function (event) {
+
+        if (event.target.dataset.modal) {
+            let modal = document.getElementById(event.target.dataset.modal);
+
+            if (!event.target.dataset.modal.includes("Eliminar")) {
+                let id = event.target.dataset.id;
+                var result = await fetch(urlApi + "Mensaje/" + id);
+
+                if (result.ok) {
+                    let json = await result.json();
+                    console.log(json);
+
+                    let form = modal.querySelector("form");
+                    for (let i in json) {
+                        if (form.elements[i] && i != "fecha") {
+                            form.elements[i].value = json[i];
+                        }
+                    }
+                }
+                else {
+                    console.log(json);
+                }
+            }
+            modal.style.display = "block";
+            return;
+        }
+        else if (event.target.dataset.cancel) {
+            event.target.closest(".modal").style.display = "none";
+        }
+    });
+
+    document.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        let form = event.target;
+        let json = Object.fromEntries(new FormData(form))
+        let response = await fetch(urlApi + form.dataset.action, {
+            method: form.method,
+            body: JSON.stringify(json),
+            headers: {
+                "content-type": "application/json",
+            }
+        });
+        if (response.ok) {
+            form.reset();
+            form.closest(".modal").style.display = "none";
+            mostrarPedidos();
+        }
+        else if (response.status == 400) {
+            console.log(response.statusText);
+            let error = await response.text();
+            alert(error);
+        }
+
+    });
    
 
 </script>

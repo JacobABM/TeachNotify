@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TeachNotifyApi.Modelos
 {
@@ -11,7 +12,9 @@ namespace TeachNotifyApi.Modelos
         public string Mensajes { get; set; } = null!;
         public DateTime Fecha { get; set; }
 
+        [JsonIgnore]
         public virtual Alumno IdAlumnoNavigation { get; set; } = null!;
+        [JsonIgnore]
         public virtual Docente IdDocenteNavigation { get; set; } = null!;
     }
 }
