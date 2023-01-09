@@ -15,11 +15,17 @@ namespace TeachNotifyApi.Repositories
 
         }
 
-        public override void Insert(Mensaje entity)
+        public Mensaje? GetbyId(int id)
         {
-            entity.IdMensajes = 1;
-            entity.IdDocente = 1;
-            entity.IdAlumno = 1;
+            return Context
+                .Set<Mensaje>()
+                .Include(x => x.IdAlumnoNavigation)
+                .Include(x => x.IdDocenteNavigation)
+                .FirstOrDefault(x => x.IdMensajes == id);
+        }
+
+        public override void Insert(Mensaje entity)
+        {         
             base.Insert(entity);
             
         }

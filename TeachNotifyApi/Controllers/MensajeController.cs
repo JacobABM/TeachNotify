@@ -28,12 +28,35 @@ namespace TeachNotifyApi.Controllers
             return Ok(mensajes.Select(x => new
             {
                 x.IdMensajes,
-                x.IdAlumnoNavigation.NombreAlumno,
-                x.IdDocenteNavigation.NombreDocente,
+                x.IdAlumnoNavigation?.NombreAlumno,
+                x.IdDocenteNavigation?.NombreDocente,
                 x.Mensajes,
                 x.Fecha
             }
          ));
+        }
+
+        [HttpGet("GetById/{id}")]
+        public IActionResult GetById(int id)
+        {
+            var x = repo.GetbyId(id);
+            if (x != null)
+            {
+                return Ok(new
+                {
+                    x.IdMensajes,
+                    x.IdAlumnoNavigation?.NombreAlumno,
+                    x.IdDocenteNavigation?.NombreDocente,
+                    x.Mensajes,
+                    x.Fecha,
+
+
+                });
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost("AgregarMensaje")]

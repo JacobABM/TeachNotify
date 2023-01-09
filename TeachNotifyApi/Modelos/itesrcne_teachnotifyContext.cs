@@ -96,13 +96,11 @@ namespace TeachNotifyApi.Modelos
                 entity.HasOne(d => d.IdAlumnoNavigation)
                     .WithMany(p => p.Mensajes)
                     .HasForeignKey(d => d.IdAlumno)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_mensajes_alumnos");
 
                 entity.HasOne(d => d.IdDocenteNavigation)
                     .WithMany(p => p.Mensajes)
                     .HasForeignKey(d => d.IdDocente)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_mensajes_docentes");
             });
 
