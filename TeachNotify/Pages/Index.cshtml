@@ -4,6 +4,9 @@
     ViewData["Title"] = "Home page";
 }
 
+<head>
+    <link rel="manifest" href="manifest.json">
+</head>
 <div class="text-center">
     <h1 class="display-4; color:white;">Bienvenido</h1>
     <p style="color:white;">No funciona el login :(</p>
@@ -37,6 +40,13 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    if (navigator.serviceWorker) {
+        navigator.serviceWorker.register("/serviceworker.js");
+    }
+</script>
 @*@section Scripts {
 
 <script type="text/javascript">
